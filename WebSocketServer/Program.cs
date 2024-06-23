@@ -26,12 +26,12 @@ app.MapPost("/broadcast", async (string message, IHubContext<ChatHub, IChatClien
     .WithName("BroadcastMessage")
     .WithOpenApi();
 
-app.MapPost("/text-message", async (string userId, string message, IHubContext<ChatHub> context) =>
+app.MapPost("/ack", async (string userId, IHubContext<ChatHub> context) =>
     {
-        await context.Clients.Client(userId).SendAsync("TextMessage", message);
+        await context.Clients.Client(userId).SendAsync("Ack", "Ack is returning the call after processing");
         return Results.NoContent();
     })
-    .WithName("TextMessage")
+    .WithName("Ack")
     .WithOpenApi();
 
 app.Run();

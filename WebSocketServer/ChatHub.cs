@@ -2,15 +2,11 @@
 
 namespace TestWebSockets;
 
-public sealed class ChatHub : Hub<IChatClient>
+public class ChatHub : Hub<IChatClient>
 {
-    public override async Task OnConnectedAsync()
+    public async Task TextMessage(string message)
     {
-        await Clients.All.ReceiveMessage($"{Context.ConnectionId} : has joined");
-    }
-    
-    public async Task SendMessage(string message)
-    {
-        await Clients.All.ReceiveMessage($"{Context.ConnectionId} : {message}");
+        var newString = $"--{message}--";
+        await Clients.Caller.TextMessage(newString);
     }
 }

@@ -26,4 +26,12 @@ app.MapPost("/broadcast", async (string message, IHubContext<ChatHub, IChatClien
     .WithName("BroadcastMessage")
     .WithOpenApi();
 
+app.MapPost("/text-message", async (string userId, string message, IHubContext<ChatHub> context) =>
+    {
+        await context.Clients.Client(userId).SendAsync("TextMessage", message);
+        return Results.NoContent();
+    })
+    .WithName("TextMessage")
+    .WithOpenApi();
+
 app.Run();
